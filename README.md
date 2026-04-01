@@ -131,3 +131,19 @@ Necessary RE-RENDERS come in 2 flavors:
 - Seeing if you can skip doing stuff is *sometimes* less work than doing stuff. *(Memoization + Compiler)*
 - You can *put off* doing stuff. *(Suspense + Transitions)*
 - Load as much as you need and as little as you can get away with. *(Lazy loading + bundle optimization)*
+
+## React Fiber
+
+React Fiber is a cooperatively scheduled rendering engine that changes how React figures out what changes to make to the DOM. It allows React to be smarter about rendering by being able to pause, interrupt, or restart work based on priority, rather than blocking the main thread until completion.
+
+React Fiber enables React to distinguish between urgent and non-urgent updates by checking in periodically to determine if the current work is still valuable or if there are more important tasks to handle. It can pause or stop less important work to handle urgent updates, then either resume or restart the previous work.
+
+### Early versions of React
+Early versions of React would start at the top of the component tree and go through the entire tree in a blocking manner. Once the process started, it would block the main thread and run to completion, regardless of what happened, which could cause performance issues in larger applications
+
+### React Fiber help improve Performance even when not explicitly used
+
+React Fiber comes up for air regularly (approximately every 16.6 milliseconds to match the browser's 60 frames per second) to allow other operations in the application to execute, such as CSS animations, promise resolutions, and other JavaScript operations. This prevents blocking the main thread and improves overall application responsiveness.
+
+### React Fiber sometimes do more work but still feel faster to users?
+React Fiber may technically do more work by stopping current tasks to respond to higher-priority updates and then having to redo some work. However, this approach feels faster to users because it prioritizes responding to important interactions immediately rather than completing less important work first, even though the total computational work may be greater.
