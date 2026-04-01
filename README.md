@@ -52,4 +52,46 @@ We won't use _all_ of the examples today, but we have a number to choose from de
 - **Lazy Loading** - React.lazy() and Suspense for code splitting
 - **Suspenseful** - Modern data fetching with Suspense and the use() hook (React 19)
 
-# Other NOTES
+# NOTES
+<details>
+<summary><strong>React Performance Principles &amp; Hard Problems (click to expand)</strong></summary>
+
+<br />
+
+### Golden Rules of React Performance
+
+Not doing stuff is faster than doing stuff.
+
+Code that doesn't have to run is way faster than code that has to run. Every step closer to never re-rendering makes an application more performant.
+
+- Memoization and caching are themselves doing something.  
+  If the cost of caching saves you from having to do more stuff, then it works.
+
+  But if you're doing more stuff than it saves you, then it doesn't work and can actually be slower than not doing it at all.
+
+---
+
+### Second Rule for React Performance
+
+Feeling fast is pretty much as good as actually being fast.  
+This means techniques like preloading stuff or optimistically updating the UI when the server hasn't responded yet don't technically make things faster, BUT they make the application feel faster to the user, which is equally valuable.
+
+---
+
+### The Two Hardest Problems in Computer Science
+
+The two hardest problems are naming things and cache invalidation.
+
+Cache invalidation is particularly problematic because if something isn't loading because it thinks it's already memoized when it has actually changed, these bugs are incredibly hard to solve.
+
+They're often caused by overusing `React.memo` on everything, which makes the system check unnecessarily if something needs to be done, making it slower than not doing it at all.
+
+---
+
+### The Purpose of React's Transition APIs (`useTransition`, `useDeferredValue`)
+
+These APIs allow developers to specify what is important and urgent versus what can wait.  
+They enable prioritizing critical work first and deferring less important updates, solving the problem of doing everything with equal priority.  
+They can solve specific classes of performance problems with relatively simple code, often just a few lines.
+
+</details>
