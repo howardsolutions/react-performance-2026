@@ -53,6 +53,7 @@ We won't use _all_ of the examples today, but we have a number to choose from de
 - **Suspenseful** - Modern data fetching with Suspense and the use() hook (React 19)
 
 # NOTES
+
 <details>
 <summary><strong>React Performance Principles &amp; Hard Problems (click to expand)</strong></summary>
 
@@ -95,3 +96,29 @@ They enable prioritizing critical work first and deferring less important update
 They can solve specific classes of performance problems with relatively simple code, often just a few lines.
 
 </details>
+
+## Anatomy of a Re-render
+
+State typically changes for 1 of 3 reasons
+
+- STATE CHANGED
+
+- CONTEXT CHANGED
+
+- It's PARENT CHANGED || Its props changed
+
+
+### React's Rendering Cycle - How everything goes down.
+
+Something changed, typically triggered by useState or useReducer
+
+RENDER PHASE => COMMIT PHASE => CLEAN UP PHASE
+
+- There're REALLY ONLY 2 TYPES OF STATE CHANGES: 
+1) Necessary 
+2) UN-necessary
+
+Necessary RE-RENDERS come in 2 flavors: 
+
+1) URGENT 
+2) NON-URGENT
