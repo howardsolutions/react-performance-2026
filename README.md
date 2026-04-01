@@ -122,3 +122,12 @@ Necessary RE-RENDERS come in 2 flavors:
 
 1) URGENT 
 2) NON-URGENT
+
+## SOME THEMES
+
+- for web performance... and life.
+
+- Not doing stuff is *way faster* than doing stuff. *(Component hierarchy & state management)*
+- Seeing if you can skip doing stuff is *sometimes* less work than doing stuff. *(Memoization + Compiler)*
+- You can *put off* doing stuff. *(Suspense + Transitions)*
+- Load as much as you need and as little as you can get away with. *(Lazy loading + bundle optimization)*
