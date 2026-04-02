@@ -147,3 +147,21 @@ React Fiber comes up for air regularly (approximately every 16.6 milliseconds to
 
 ### React Fiber sometimes do more work but still feel faster to users?
 React Fiber may technically do more work by stopping current tasks to respond to higher-priority updates and then having to redo some work. However, this approach feels faster to users because it prioritizes responding to important interactions immediately rather than completing less important work first, even though the total computational work may be greater.
+
+## Rendering Phase
+
+If something MORE IMPORTANT comes along, it can turn its focus and put the LESS important stuff on PAUSE or TOSS IT OUT for now, and start over later.
+
+Inside of each RENDER there are 2 trees.
+
+### One thing at a time - The rendering phase
+
+- Take the NEXT Fiber
+
+- Run beginWork(fiber, renderLanes) -- Basically CALL the component function, derive the children.
+
+- If there are children, descend. If not, bubble up via `completeWork` to finalize the node, update the DOM, collect any effects.
+
+- Along the way - ask SHOULD I YIELD? -- yes? Pause for a moment and let the browser have the wheel back for a second.
+
+- PICK UP where you leff off
