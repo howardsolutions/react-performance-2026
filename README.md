@@ -146,7 +146,10 @@ Early versions of React would start at the top of the component tree and go thro
 React Fiber comes up for air regularly (approximately every 16.6 milliseconds to match the browser's 60 frames per second) to allow other operations in the application to execute, such as CSS animations, promise resolutions, and other JavaScript operations. This prevents blocking the main thread and improves overall application responsiveness.
 
 ### React Fiber sometimes do more work but still feel faster to users?
+
 React Fiber may technically do more work by stopping current tasks to respond to higher-priority updates and then having to redo some work. However, this approach feels faster to users because it prioritizes responding to important interactions immediately rather than completing less important work first, even though the total computational work may be greater.
+
+React Fiber aims to check approximately every 5 milliseconds to determine if it should pause and let other things happen. However, this timing can vary if there's something expensive happening that blocks it.
 
 ## Rendering Phase
 
@@ -165,3 +168,20 @@ Inside of each RENDER there are 2 trees.
 - Along the way - ask SHOULD I YIELD? -- yes? Pause for a moment and let the browser have the wheel back for a second.
 
 - PICK UP where you leff off
+
+### two trees that React Fiber maintains during the rendering process?
+
+React Fiber maintains the current tree (which is what is referenced in the DOM) and a work-in-progress tree (which is what React is in the middle of updating). 
+
+This allows React to swap back to the current tree if it needs to abandon work in progress when something more important comes along.
+
+### What happens to work-in-progress when React Fiber determines that something more important needs to be processed?
+When something more important comes along, React Fiber can abandon the work-in-progress tree and swap back to the current tree (which is not half-updated). It can then either pick up where it left off later or start over if new state changes have made the previous work irrelevant.
+
+
+## Commit phase 
+
+The render phase is when React figures out what the changes meant by working with the virtual DOM. 
+
+The commit phase is when React actually makes those changes happen to the real DOM.
+
