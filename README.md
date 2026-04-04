@@ -107,30 +107,30 @@ State typically changes for 1 of 3 reasons
 
 - It's PARENT CHANGED || Its props changed
 
-
 ### React's Rendering Cycle - How everything goes down.
 
 Something changed, typically triggered by useState or useReducer
 
 RENDER PHASE => COMMIT PHASE => CLEAN UP PHASE
 
-- There're REALLY ONLY 2 TYPES OF STATE CHANGES: 
-1) Necessary 
-2) UN-necessary
+- There're REALLY ONLY 2 TYPES OF STATE CHANGES:
 
-Necessary RE-RENDERS come in 2 flavors: 
+1. Necessary
+2. UN-necessary
 
-1) URGENT 
-2) NON-URGENT
+Necessary RE-RENDERS come in 2 flavors:
+
+1. URGENT
+2. NON-URGENT
 
 ## SOME THEMES
 
 - for web performance... and life.
 
-- Not doing stuff is *way faster* than doing stuff. *(Component hierarchy & state management)*
-- Seeing if you can skip doing stuff is *sometimes* less work than doing stuff. *(Memoization + Compiler)*
-- You can *put off* doing stuff. *(Suspense + Transitions)*
-- Load as much as you need and as little as you can get away with. *(Lazy loading + bundle optimization)*
+- Not doing stuff is _way faster_ than doing stuff. _(Component hierarchy & state management)_
+- Seeing if you can skip doing stuff is _sometimes_ less work than doing stuff. _(Memoization + Compiler)_
+- You can _put off_ doing stuff. _(Suspense + Transitions)_
+- Load as much as you need and as little as you can get away with. _(Lazy loading + bundle optimization)_
 
 ## React Fiber
 
@@ -139,6 +139,7 @@ React Fiber is a cooperatively scheduled rendering engine that changes how React
 React Fiber enables React to distinguish between urgent and non-urgent updates by checking in periodically to determine if the current work is still valuable or if there are more important tasks to handle. It can pause or stop less important work to handle urgent updates, then either resume or restart the previous work.
 
 ### Early versions of React
+
 Early versions of React would start at the top of the component tree and go through the entire tree in a blocking manner. Once the process started, it would block the main thread and run to completion, regardless of what happened, which could cause performance issues in larger applications
 
 ### React Fiber help improve Performance even when not explicitly used
@@ -171,17 +172,34 @@ Inside of each RENDER there are 2 trees.
 
 ### two trees that React Fiber maintains during the rendering process?
 
-React Fiber maintains the current tree (which is what is referenced in the DOM) and a work-in-progress tree (which is what React is in the middle of updating). 
+React Fiber maintains the current tree (which is what is referenced in the DOM) and a work-in-progress tree (which is what React is in the middle of updating).
 
 This allows React to swap back to the current tree if it needs to abandon work in progress when something more important comes along.
 
 ### What happens to work-in-progress when React Fiber determines that something more important needs to be processed?
+
 When something more important comes along, React Fiber can abandon the work-in-progress tree and swap back to the current tree (which is not half-updated). It can then either pick up where it left off later or start over if new state changes have made the previous work irrelevant.
 
+## Commit phase
 
-## Commit phase 
-
-The render phase is when React figures out what the changes meant by working with the virtual DOM. 
+The render phase is when React figures out what the changes meant by working with the virtual DOM.
 
 The commit phase is when React actually makes those changes happen to the real DOM.
 
+## the fundamental rule for managing state placement in React applications to avoid unnecessary re-renders?
+
+Keep state as high as you need it and as low as you can get away with.
+
+Push state down to the lowest possible component level where it's actually needed, rather than keeping it at higher levels in the component tree.
+
+## What are the two main options for addressing performance issues caused by deeply nested component trees with shared state?
+
+Either push all the state down to lower-level components where it's actually needed, or flatten the component tree by inlining components instead of having them as separate nested components.
+
+The browser paints every 16.6 milliseconds. If you can get all your React rendering work done in under 16 milliseconds, the performance impact is imperceptible to users, meaning optimizations beyond that threshold may not be worthwhile
+
+## What approach should be taken when deciding whether to optimize React component performance?
+
+Measure first to identify actual problems, then solve significant issues while keeping an eye on potential future problems.
+
+Don't over-optimize imperceptible performance issues, but also don't ignore patterns that could become major problems as the codebase grows over time.
