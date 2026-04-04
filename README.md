@@ -203,3 +203,15 @@ The browser paints every 16.6 milliseconds. If you can get all your React render
 Measure first to identify actual problems, then solve significant issues while keeping an eye on potential future problems.
 
 Don't over-optimize imperceptible performance issues, but also don't ignore patterns that could become major problems as the codebase grows over time.
+
+### the lowest risk and most effective strategy for preventing unnecessary re-renders in React?
+
+Pushing state down to where it's needed is the easiest, most effective, and lowest risk strategy.
+
+This approach keeps state local to the components that actually need it, preventing unnecessary re-renders in unrelated parts of the component tree.
+
+# MEMOIZATION
+
+## the difference between useMemo and useCallback hooks in React?
+
+useMemo is used to memoize a computed value - if none of the dependencies have changed, it returns the cached value instead of recomputing it. useCallback is used to memoize a function definition - if none of the dependencies have changed, it returns the same function reference instead of creating a new one. This prevents unnecessary function recreation and helps avoid garbage collection overhead.
