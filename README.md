@@ -188,7 +188,7 @@ The commit phase is when React actually makes those changes happen to the real D
 
 ## the fundamental rule for managing state placement in React applications to avoid unnecessary re-renders?
 
-Keep state as high as you need it and as low as you can get away with.
+Keep state as HIGH as you need it and as LOW as you can get away with.
 
 Push state down to the lowest possible component level where it's actually needed, rather than keeping it at higher levels in the component tree.
 
