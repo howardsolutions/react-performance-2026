@@ -221,3 +221,19 @@ The three main memoization tools are: useCallback (a hook for memoizing function
 #### a pure component in React, and why does this concept matter for memoization?
 
 A pure component is one where the same inputs (props) always produce the same outputs. This means the component's output is determined solely by its props, without side effects from hooks like useState or useContext. This matters for memoization because React.memo only works effectively with pure components - components with internal state can change independently of their props, making memoization ineffective.
+
+## React Compiler
+
+React Compiler analyzes code at BUILD time to automatically identify and apply performance optimizations,
+
+specifically handling memoization that developers would otherwise need to implement manually using hooks like useMemo, useCallback, and React.memo.
+
+### How does React Compiler's approach to memoization differ from traditional React.memo in terms of efficiency?
+
+React Compiler uses simpler, cheaper abstractions by storing direct value references in arrays and performing direct equality checks, rather than instantiating new functions and calling comparison methods.
+
+It checks stored references directly, avoiding the overhead of function calls and object comparisons that React.memo requires.
+
+The "use compiler" directive is a string literal placed at the top of a file to opt components into React Compiler. 
+
+It's designed as a string because it doesn't affect runtime code for anything that doesn't recognize it, making it backward compatible with legacy code. This pattern originates from the ES5 days and allows new tooling to detect and process it without breaking existing code.
