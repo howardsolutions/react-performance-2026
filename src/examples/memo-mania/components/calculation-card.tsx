@@ -7,7 +7,7 @@ import {
   getCalculationLabel,
   getCalculationDescription,
 } from '../utilities/expensive-calculations';
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
 interface CalculationCardProps {
   calculation: Calculation;
@@ -15,7 +15,11 @@ interface CalculationCardProps {
   onDelete: (id: string) => void;
 }
 
-export function CalculationCard({ calculation, onUpdate, onDelete }: CalculationCardProps) {
+export const CalculationCard = memo(function CalculationCard({
+  calculation,
+  onUpdate,
+  onDelete,
+}: CalculationCardProps) {
   // This expensive calculation runs on EVERY render of ANY card
   const result = useMemo(
     () => calculate(calculation.type, calculation.input),
@@ -58,4 +62,4 @@ export function CalculationCard({ calculation, onUpdate, onDelete }: Calculation
       </div>
     </Card>
   );
-}
+});

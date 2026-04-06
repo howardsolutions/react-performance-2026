@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Container } from '$components/container';
 import { Button } from '$components/button';
 import { CalculationList } from './components/calculation-list';
@@ -25,17 +25,17 @@ function Application() {
     setCalculations([...calculations, newCalculation]);
   }
 
-  function updateCalculation(id: string, input: number) {
-    setCalculations(
-      calculations.map((calc) =>
+  const onUpdate = useCallback((id: string, input: number) => {
+    setCalculations((prevCalculations) =>
+      prevCalculations.map((calc) =>
         calc.id === id ? { ...calc, input } : calc
       )
     );
-  }
+  }, []);
 
-  function deleteCalculation(id: string) {
-    setCalculations(calculations.filter((calc) => calc.id !== id));
-  }
+  const onDelete = useCallback((id: string) => {
+    setCalculations((prevCalculations) => prevCalculations.filter((calc) => calc.id !== id));
+  }, []);
 
   return (
     <Container className="my-8 space-y-8">
@@ -69,8 +69,8 @@ function Application() {
       <section>
         <CalculationList
           calculations={calculations}
-          onUpdate={updateCalculation}
-          onDelete={deleteCalculation}
+          onUpdate={onUpdate}
+          onDelete={onDelete}
         />
       </section>
     </Container>
