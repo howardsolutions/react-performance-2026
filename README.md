@@ -215,3 +215,9 @@ This approach keeps state local to the components that actually need it, prevent
 ## the difference between useMemo and useCallback hooks in React?
 
 useMemo is used to memoize a computed value - if none of the dependencies have changed, it returns the cached value instead of recomputing it. useCallback is used to memoize a function definition - if none of the dependencies have changed, it returns the same function reference instead of creating a new one. This prevents unnecessary function recreation and helps avoid garbage collection overhead.
+
+The three main memoization tools are: useCallback (a hook for memoizing functions), useMemo (a hook for memoizing expensive computations), and React.memo (a higher-order component that wraps a component to prevent unnecessary re-renders).
+
+#### a pure component in React, and why does this concept matter for memoization?
+
+A pure component is one where the same inputs (props) always produce the same outputs. This means the component's output is determined solely by its props, without side effects from hooks like useState or useContext. This matters for memoization because React.memo only works effectively with pure components - components with internal state can change independently of their props, making memoization ineffective.
