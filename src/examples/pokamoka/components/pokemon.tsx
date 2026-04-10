@@ -27,16 +27,9 @@ const typeColors: Record<string, 'neutral' | 'success' | 'warning' | 'error' | '
   Steel: 'neutral',
 };
 
-export const Pokemon = ({
-  id,
-  name,
-  type,
-  species,
-  description,
-  base,
-  profile,
-  image,
-}: PokemonRecord) => {
+import { memo } from 'react';
+
+function Pokemon({ id, name, type, species, description, base, profile, image }: PokemonRecord) {
   return (
     <Card className="max-w-md">
       <CardHeader>
@@ -68,19 +61,20 @@ export const Pokemon = ({
 
         <div className="mb-4 space-y-3">
           <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Base Stats</h4>
-          {base && Object.entries(base).map(([stat, value]) => (
-            <div key={stat}>
-              <div className="mb-1 flex justify-between text-xs text-slate-600 dark:text-slate-400">
-                <span>{stat}</span>
-                <span>{value}</span>
+          {base &&
+            Object.entries(base).map(([stat, value]) => (
+              <div key={stat}>
+                <div className="mb-1 flex justify-between text-xs text-slate-600 dark:text-slate-400">
+                  <span>{stat}</span>
+                  <span>{value}</span>
+                </div>
+                <Progress
+                  value={value}
+                  max={255}
+                  variant={value >= 100 ? 'success' : value >= 60 ? 'default' : 'error'}
+                />
               </div>
-              <Progress
-                value={value}
-                max={255}
-                variant={value >= 100 ? 'success' : value >= 60 ? 'default' : 'error'}
-              />
-            </div>
-          ))}
+            ))}
         </div>
 
         <div className="mb-4 grid grid-cols-2 gap-4 text-sm">
@@ -108,4 +102,6 @@ export const Pokemon = ({
       </CardContent>
     </Card>
   );
-};
+}
+
+export const MemoizedPokemon = memo(Pokemon);
