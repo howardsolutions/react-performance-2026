@@ -312,3 +312,7 @@ and then perform the transition update when the high-priority queue is clear. It
 ### When using useDeferredValue, how can you determine if a transition is still pending without the isPending value from useTransition?
 
 You can determine if a transition is pending by comparing the original value with the deferred value. If they are not equal, it means the deferred value has not yet caught up to the most recent value, implying a transition is still in progress. For example: const isPending = inputQuery !== deferredInputQuery.
+
+- useTransition is typically used when you control the state update directly and want to mark it as low priority.
+
+- useDeferredValue is used when you're on the receiving end of a value (like in a child component receiving props) and want to defer updates to that value. Most commonly, you'll use useTransition when you control the state updates.
