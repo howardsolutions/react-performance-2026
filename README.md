@@ -279,3 +279,23 @@ If that doesn't fit due to constraints where you only have access to a value and
 Reflecting user input back to them is high priority because if the UI starts lagging and freezing, preventing users from seeing the results of their actions (like typing, hovering, or animations), it creates an infuriating user experience. 
 
 Users expect immediate feedback from their interactions.
+
+## What is the target time per frame to achieve 60 frames per second in a web application?
+
+16.6 milliseconds per frame is needed to achieve 60 frames per second.
+
+## What is the main benefit of React Fiber's architecture when handling user interactions during expensive computations?
+
+React Fiber allows high-priority interactions (like keystrokes) to be processed immediately without waiting for lower-priority tasks (like searches) to complete. 
+
+It can interrupt ongoing work when new, higher-priority events occur.
+
+## Why might showing a loading indicator be better than no feedback during a long-running operation?
+
+A loading indicator provides visual feedback that the application is working on the task, which is better than no response at all. 
+
+No feedback makes the application feel unresponsive and broken.
+
+## What performance problem occurs when fuzzy searching across a large dataset with multiple fields on each keystroke?
+
+Searching through thousands of items across multiple fields can cause the CPU to max out, creating noticeable lag where user input is delayed from appearing on screen, sometimes taking a second or more instead of the required 16.6 milliseconds per frame.
