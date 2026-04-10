@@ -264,19 +264,19 @@ This allows React to prioritize more urgent updates, like user input, while stil
 
 ## the benefit of separating urgent from non-urgent updates in React applications?
 
-Separating urgent from non-urgent updates allows the application to feel more responsive by prioritizing immediate user interactions (like input and hover events) while deferring expensive operations that can wait. 
+Separating urgent from non-urgent updates allows the application to feel more responsive by prioritizing immediate user interactions (like input and hover events) while deferring expensive operations that can wait.
 
 This prevents the UI from freezing or lagging during user interactions.
 
 ## When should you choose useTransition over useDeferredValue?
 
-You should reach for useTransition first when you control the code. 
+You should reach for useTransition first when you control the code.
 
 If that doesn't fit due to constraints where you only have access to a value and don't have total control of the situation, then use useDeferredValue.
 
 ## Why is it important to prioritize reflecting user input back to them in React applications?
 
-Reflecting user input back to them is high priority because if the UI starts lagging and freezing, preventing users from seeing the results of their actions (like typing, hovering, or animations), it creates an infuriating user experience. 
+Reflecting user input back to them is high priority because if the UI starts lagging and freezing, preventing users from seeing the results of their actions (like typing, hovering, or animations), it creates an infuriating user experience.
 
 Users expect immediate feedback from their interactions.
 
@@ -286,16 +286,29 @@ Users expect immediate feedback from their interactions.
 
 ## What is the main benefit of React Fiber's architecture when handling user interactions during expensive computations?
 
-React Fiber allows high-priority interactions (like keystrokes) to be processed immediately without waiting for lower-priority tasks (like searches) to complete. 
+React Fiber allows high-priority interactions (like keystrokes) to be processed immediately without waiting for lower-priority tasks (like searches) to complete.
 
 It can interrupt ongoing work when new, higher-priority events occur.
 
 ## Why might showing a loading indicator be better than no feedback during a long-running operation?
 
-A loading indicator provides visual feedback that the application is working on the task, which is better than no response at all. 
+A loading indicator provides visual feedback that the application is working on the task, which is better than no response at all.
 
 No feedback makes the application feel unresponsive and broken.
 
 ## What performance problem occurs when fuzzy searching across a large dataset with multiple fields on each keystroke?
 
 Searching through thousands of items across multiple fields can cause the CPU to max out, creating noticeable lag where user input is delayed from appearing on screen, sometimes taking a second or more instead of the required 16.6 milliseconds per frame.
+
+### useTransition
+
+useTransition returns an array with two values: isPending (a boolean indicating whether a transition is in progress) and startTransition (a function to mark state updates as low priority). The isPending boolean can be used to show loading indicators, while startTransition wraps state updates that should be processed at lower priority.
+
+startTransition tells React to treat the wrapped state update as low priority work.
+This means React will update high-priority items (like direct user interactions) first,
+
+and then perform the transition update when the high-priority queue is clear. It's similar to requestIdleCallback, telling React to perform the update when it has time available.
+
+### When using useDeferredValue, how can you determine if a transition is still pending without the isPending value from useTransition?
+
+You can determine if a transition is pending by comparing the original value with the deferred value. If they are not equal, it means the deferred value has not yet caught up to the most recent value, implying a transition is still in progress. For example: const isPending = inputQuery !== deferredInputQuery.
