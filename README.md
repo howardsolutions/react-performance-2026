@@ -234,6 +234,48 @@ React Compiler uses simpler, cheaper abstractions by storing direct value refere
 
 It checks stored references directly, avoiding the overhead of function calls and object comparisons that React.memo requires.
 
-The "use compiler" directive is a string literal placed at the top of a file to opt components into React Compiler. 
+The "use compiler" directive is a string literal placed at the top of a file to opt components into React Compiler.
 
 It's designed as a string because it doesn't affect runtime code for anything that doesn't recognize it, making it backward compatible with legacy code. This pattern originates from the ES5 days and allows new tooling to detect and process it without breaking existing code.
+
+# TRANSITION
+
+## 2 more hooks
+
+- startTransition() -- is used when TRIGGERING an UPDATE (i.e setState) in an EVENT HANDLER
+
+Give you the ability to say like: "THIS thing we're going to do is LOW PRIORITY", THEN pass it a function and navigate through that.
+
+- useDeferredValue() -- used when receiving NEW data from parent component (or earlier hook in the same component)
+
+Changing of THIS VALUE is going to rtrigger something REALLY EXPENSIVE
+
+## Differences between 2 hooks
+
+useTransition is used when you control the code and allows you to pass a function that marks certain operations as low priority.
+
+useDeferredValue is used when you don't control the code and works with a value that may trigger expensive operations, allowing you to defer updates to that value.
+
+## In React Fiber's prioritization system, what does marking something as a transition indicate?
+
+Marking something as a transition indicates that it is not urgent and can be placed in a lower priority lane.
+
+This allows React to prioritize more urgent updates, like user input, while still processing the less urgent work when resources are available.
+
+## the benefit of separating urgent from non-urgent updates in React applications?
+
+Separating urgent from non-urgent updates allows the application to feel more responsive by prioritizing immediate user interactions (like input and hover events) while deferring expensive operations that can wait. 
+
+This prevents the UI from freezing or lagging during user interactions.
+
+## When should you choose useTransition over useDeferredValue?
+
+You should reach for useTransition first when you control the code. 
+
+If that doesn't fit due to constraints where you only have access to a value and don't have total control of the situation, then use useDeferredValue.
+
+## Why is it important to prioritize reflecting user input back to them in React applications?
+
+Reflecting user input back to them is high priority because if the UI starts lagging and freezing, preventing users from seeing the results of their actions (like typing, hovering, or animations), it creates an infuriating user experience. 
+
+Users expect immediate feedback from their interactions.
