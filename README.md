@@ -305,6 +305,7 @@ Searching through thousands of items across multiple fields can cause the CPU to
 useTransition returns an array with two values: isPending (a boolean indicating whether a transition is in progress) and startTransition (a function to mark state updates as low priority). The isPending boolean can be used to show loading indicators, while startTransition wraps state updates that should be processed at lower priority.
 
 startTransition tells React to treat the wrapped state update as low priority work.
+
 This means React will update high-priority items (like direct user interactions) first,
 
 and then perform the transition update when the high-priority queue is clear. It's similar to requestIdleCallback, telling React to perform the update when it has time available.
@@ -317,31 +318,60 @@ You can determine if a transition is pending by comparing the original value wit
 
 - useDeferredValue is used when you're on the receiving end of a value (like in a child component receiving props) and want to DEFER UPDATES to that value. Most commonly, you'll use useTransition when you control the state updates.
 
+## useDeferredValue
+
 ### When should you use useDeferredValue instead of useTransition in React?
 
 useDeferredValue should be used when you don't have full control over the value that's changing.
 
-Such as when receiving a value as a prop from a library, parent component, or in a microfrontend architecture. 
+Such as when receiving a value as a prop from a library, parent component, or in a microfrontend architecture.
 
 useTransition is preferred when you control the code and can DIRECTLY MANAGE the state updates.
 
+## How does useDeferredValue handle incoming prop changes that would trigger expensive operations?
+
+useDeferredValue returns the last known good value that was computed, even if a new value is received.
+
+It keeps the old value until React Fiber has a chance to process low priority work, preventing immediate re-computation of expensive queries or operations.
+
+The new value is then applied when React processes low priority tasks.
+
+### What is the relationship between useDeferredValue and React Fiber's work scheduling?
+
+useDeferredValue works with React Fiber's priority system by treating updates from the deferred value as LOW priority work.
+
+When a new value comes in, React Fiber saves it as a unit of work (fiber of work) to be processed LATER when handling low priority tasks, rather than immediately triggering CASCADING UPDATES.
+
+### What is the primary difference in control between useTransition and useDeferredValue?
+
+useTransition gives you control over when to set both urgent and non-urgent state updates,
+allowing you to explicitly manage which updates happen immediately and which are deferred.
+
+useDeferredValue is for situations where you're on the receiving end of a value (like a prop) and don't control WHEN or HOW it changes.
+
+### How does useDeferredValue prevent cascading updates from props?
+
+When a prop that would normally trigger cascading updates is passed to useDeferredValue, it treats all downstream effects as a low priority transition task. 
+
+This prevents the immediate cascade of re-renders and computations, DERERING THEM UNTIL React has TIME to process low priority work.
+
 ### How does React Suspense handle promises differently from traditional useEffect patterns?
 
-With Suspense, Fiber works through the component tree and when it encounters an unresolved promise, it pauses that part of the tree and shows the Suspense fallback component instead. 
+With Suspense, Fiber works through the component tree and when it encounters an unresolved promise, it pauses that part of the tree and shows the Suspense fallback component instead.
 
 Once the promise resolves, React can complete that part of the tree. This is different from useEffect, which runs after the render and commit phases are complete — meaning React has no awareness of async operations during rendering itself.
 
 ### What types of network and server issues can affect application performance beyond slow code execution?
 
-Network and server issues include: servers being slow due to high load or being backed up, intermittent internet connections (like on public transit), and poor connectivity in general. 
+Network and server issues include: servers being slow due to high load or being backed up, intermittent internet connections (like on public transit), and poor connectivity in general.
 
 These communication-related issues are separate from code execution performance and require different optimization strategies like optimistic updates and offline capabilities.
 
 ### What are the benefits of using optimistic updates even when server operations have inherent latency?
 
-Even when server responses take time (like AI chat responses that naturally take a second or two), 
-optimistic updates improve user experience by immediately showing the user's action in the UI. 
+Even when server responses take time (like AI chat responses that naturally take a second or two),
+optimistic updates improve user experience by immediately showing the user's action in the UI.
 
-For example, in a chat application, the user's message can appear in the chat window immediately upon hitting enter, while the actual server processing and response happen in the background. 
+For example, in a chat application, the user's message can appear in the chat window immediately upon hitting enter, while the actual server processing and response happen in the background.
 
 This provides immediate feedback and makes the application feel more responsive.
