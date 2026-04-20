@@ -313,6 +313,35 @@ and then perform the transition update when the high-priority queue is clear. It
 
 You can determine if a transition is pending by comparing the original value with the deferred value. If they are not equal, it means the deferred value has not yet caught up to the most recent value, implying a transition is still in progress. For example: const isPending = inputQuery !== deferredInputQuery.
 
-- useTransition is typically used when you control the state update directly and want to mark it as low priority.
+- useTransition is typically used when you control the state update directly and want to mark it as LOW priority.
 
-- useDeferredValue is used when you're on the receiving end of a value (like in a child component receiving props) and want to defer updates to that value. Most commonly, you'll use useTransition when you control the state updates.
+- useDeferredValue is used when you're on the receiving end of a value (like in a child component receiving props) and want to DEFER UPDATES to that value. Most commonly, you'll use useTransition when you control the state updates.
+
+### When should you use useDeferredValue instead of useTransition in React?
+
+useDeferredValue should be used when you don't have full control over the value that's changing.
+
+Such as when receiving a value as a prop from a library, parent component, or in a microfrontend architecture. 
+
+useTransition is preferred when you control the code and can DIRECTLY MANAGE the state updates.
+
+### How does React Suspense handle promises differently from traditional useEffect patterns?
+
+With Suspense, Fiber works through the component tree and when it encounters an unresolved promise, it pauses that part of the tree and shows the Suspense fallback component instead. 
+
+Once the promise resolves, React can complete that part of the tree. This is different from useEffect, which runs after the render and commit phases are complete — meaning React has no awareness of async operations during rendering itself.
+
+### What types of network and server issues can affect application performance beyond slow code execution?
+
+Network and server issues include: servers being slow due to high load or being backed up, intermittent internet connections (like on public transit), and poor connectivity in general. 
+
+These communication-related issues are separate from code execution performance and require different optimization strategies like optimistic updates and offline capabilities.
+
+### What are the benefits of using optimistic updates even when server operations have inherent latency?
+
+Even when server responses take time (like AI chat responses that naturally take a second or two), 
+optimistic updates improve user experience by immediately showing the user's action in the UI. 
+
+For example, in a chat application, the user's message can appear in the chat window immediately upon hitting enter, while the actual server processing and response happen in the background. 
+
+This provides immediate feedback and makes the application feel more responsive.
