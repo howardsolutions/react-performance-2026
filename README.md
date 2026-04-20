@@ -375,3 +375,15 @@ optimistic updates improve user experience by immediately showing the user's act
 For example, in a chat application, the user's message can appear in the chat window immediately upon hitting enter, while the actual server processing and response happen in the background.
 
 This provides immediate feedback and makes the application feel more responsive.
+
+## Optimistic Update
+
+The useOptimistic hook function receives the current state (the existing list of posts) and the new optimistic item (the new post being added). 
+It works similarly to useReducer, where you provide a function that takes the current state and the new item to determine what to display optimistically. 
+
+Optimistic updates must be wrapped in a transition because they are considered low-priority updates compared to other renders. React will show an error if an optimistic update occurs outside of a transition or action, prompting you to wrap the update in startTransition to properly manage the update priority and pending states.
+
+When the server request succeeds, the temporary optimistic item is swapped out with the real item returned from the server. 
+
+When the request fails, the optimistic item is removed from the display and the error may bubble up to an error boundary, while React reverts to the original state it kept a copy of.
+
